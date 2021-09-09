@@ -17,20 +17,27 @@ return data.results
 // getAmovie()
 // getPopularMovies()
 
-async function getTittle() {
+async function getElementsMovie() {
     const title= await getPopularMovies()
-    const allTitles=title.map(movie=>movie.original_title)  
+    let id=1;
+    const allmovies=title.map(movie=>(
+        {
+            id: id++,
+          title: movie.original_title,
+          imgageLink: movie.poster_path
+        } 
+      ));    
     
-    return allTitles
+    return allmovies
 }
 async function  rederMovie() {
     
-    const tittles= await getTittle();
+    const tittles= await getElementsMovie();
     
     let i=1;
     for(titul of tittles){
         
-        addElement(i+++" "+titul)
+        addElement(titul)
     }
     
     
@@ -43,41 +50,54 @@ async function getUrlImage(){
     return urlImages
 }
 
-async function renderImages(){
-    const links= await getUrlImage();
-    console.log(links)
-    for (link of links){
-        addImg (link)
-    }
+// async function renderImages(){
+//     const links= await getUrlImage();
+//     console.log(links)
+//     for (link of links){
+//         addImg (link)
+//     }
    
-}
+// }
 
-function addElement (text) {
+function addElement (movieElemets) {
     // crea un nuevo div
     // y añade contenido
     var newDiv = document.createElement("div");
-    newDiv.classList.add("nueva");
-    var newContent = document.createTextNode(text);
-    newDiv.appendChild(newContent); //añade texto al div creado.
-  
-    // añade el elemento creado y su contenido al DOM
+    newDiv.classList.add("container");
     var currentDiv = document.getElementById("div2");
     currentDiv.appendChild(newDiv)
-  }
-  function addImg (url) {
-    // crea un nuevo div
-    // y añade contenido
-    
-
-    var img = document.createElement('img');
-    img.src ="https://image.tmdb.org/t/p/w500"+url 
-    document.getElementById('div3').appendChild(img);
-    
+    var divTittle = document.createElement("div");
+    divTittle.classList.add("movie-tittle");
+    divTittle.innerHTML=movieElemets.id+" "+movieElemets.title;
+    var divImg = document.createElement("div");
+    divImg.classList.add("movie-image");
 
     
+    newDiv.appendChild(divTittle);
+    // añade el elemento creado y su contenido al DOM
+    
+   
+    var img1 = document.createElement('img');
+    img1.src ="https://image.tmdb.org/t/p/w500"+ movieElemets.imgageLink;
+    divImg.appendChild(img1);
+    newDiv.appendChild(divImg);
   }
+//   function addImg (url) {
+//     // crea un nuevo div
+//     // y añade contenido
+//     var divImg = document.createElement("div");
+//     divImg.classList.add("movie-image");
+
+//     var img = document.createElement('img');
+//     img.src ="https://image.tmdb.org/t/p/w500"+url 
+//     divImg.appendChild(img)
+//     document.getElementById('div2').appendChild(divImg);
+    
+
+    
+//   }
 
   rederMovie()
-  renderImages()
+// renderImages()
 //   getUrlImage()
 //   addImg ("/34nDCQZwaEvsy4CFO5hkGRFDCVU.jpg")
